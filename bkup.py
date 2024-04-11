@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import shutil
 from pathlib import Path
 import argparse
@@ -16,6 +17,7 @@ def backup(args):
     src_file = Path(args.filename)
     suffix = src_file.suffix
     dst_dir = Path(args.dir) if args.dir else src_file.parent
+    os.makedirs(dst_dir, exist_ok=True)
     dst_basefile = src_file.stem
     time = datetime.now() if args.current_time else datetime.fromtimestamp(src_file.stat().st_mtime)
     time_str = f'{time:%Y-%m-%d_%H%M%S}'
@@ -28,7 +30,8 @@ def backup(args):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='CLI tool for taking backup of file')
+    parser = argparse.ArgumentParser(description='CLI tool for taking backup of file',
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('filename', help='specify filename')
     parser.add_argument('-m', '--move', action='store_true', help='move file')
     parser.add_argument('-d', '--dir', help='specify destination directory[')
