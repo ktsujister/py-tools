@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import os
 import shutil
 from pathlib import Path
 import argparse
@@ -17,7 +16,7 @@ def backup(args):
     src_file = Path(args.filename)
     suffix = src_file.suffix
     dst_dir = Path(args.dir) if args.dir else src_file.parent
-    os.makedirs(dst_dir, exist_ok=True)
+    dst_dir.mkdir(parents=True, exist_ok=True)
     dst_basefile = src_file.stem
     time = datetime.now() if args.current_time else datetime.fromtimestamp(src_file.stat().st_mtime)
     time_str = f'{time:%Y-%m-%d_%H%M%S}'
